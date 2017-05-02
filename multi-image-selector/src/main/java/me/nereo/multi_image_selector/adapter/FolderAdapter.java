@@ -1,6 +1,7 @@
 package me.nereo.multi_image_selector.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,10 +87,13 @@ public class FolderAdapter extends BaseAdapter {
                 if(mFolders.size()>0){
                     Folder f = mFolders.get(0);
                     if (f != null) {
-                        Picasso.with(mContext)
+                        Resources resources = mContext.getResources();
+                        int targetWidth = resources.getDimensionPixelSize(R.dimen.mis_folder_cover_size);
+                        int targetHeight = resources.getDimensionPixelSize(R.dimen.mis_folder_cover_size);
+                        Glide.with(mContext)
                                 .load(new File(f.cover.path))
                                 .error(R.drawable.mis_default_error)
-                                .resizeDimen(R.dimen.mis_folder_cover_size, R.dimen.mis_folder_cover_size)
+                                .override(targetWidth, targetHeight)
                                 .centerCrop()
                                 .into(holder.cover);
                     }else{
@@ -156,11 +160,14 @@ public class FolderAdapter extends BaseAdapter {
                 size.setText("*"+mContext.getResources().getString(R.string.mis_photo_unit));
             }
             if (data.cover != null) {
+                Resources resources = mContext.getResources();
+                int targetWidth = resources.getDimensionPixelSize(R.dimen.mis_folder_cover_size);
+                int targetHeight = resources.getDimensionPixelSize(R.dimen.mis_folder_cover_size);
                 // 显示图片
-                Picasso.with(mContext)
+                Glide.with(mContext)
                         .load(new File(data.cover.path))
                         .placeholder(R.drawable.mis_default_error)
-                        .resizeDimen(R.dimen.mis_folder_cover_size, R.dimen.mis_folder_cover_size)
+                        .override(targetWidth, targetHeight)
                         .centerCrop()
                         .into(cover);
             }else{
